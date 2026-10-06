@@ -21,3 +21,4 @@ COPY workers /workspace/workers
 EXPOSE 8000
 
 CMD ["sh", "-c", "cd /workspace/backend && for i in $(seq 1 30); do if alembic -c alembic.ini upgrade head; then exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*'; fi; echo \"waiting for PostgreSQL ($i/30)\"; sleep 2; done; echo \"database migration failed after 30 attempts\" >&2; exit 1"]
+RUN echo "===== CHECK BACKEND =====" && ls -la /workspace/backend && echo "===== CHECK ALEMBIC =====" && ls -la /workspace/backend/alembic
